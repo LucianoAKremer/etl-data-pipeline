@@ -24,6 +24,10 @@ GRANT ALL PRIVILEGES ON DATABASE etl_db TO etl_user;`
 - `load/` → carga a la base de datos.
 - `dags/` → flujos de Airflow.
 
+# Porque opte por esta estructura?
+- Modular: cada etapa ETL es independiente → fácil mantenimiento.
+- Preparada para migrar a Airflow: después podés convertir cada script en una tarea (PythonOperator).
+
 ## 💡 Próximos pasos
 - Agregar orquestación con Airflow.
 - Conectar con dashboard de visualización.
