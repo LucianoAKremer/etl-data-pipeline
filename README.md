@@ -15,7 +15,7 @@ GRANT ALL PRIVILEGES ON DATABASE etl_db TO etl_user;`
 - Python
 - pandas
 - PostgreSQL
-- Apache Airflow / Prefect #proximamente
+- Apache Airflow / Prefect `proximamente`
 - Docker
 
 ## 📂 Estructura
