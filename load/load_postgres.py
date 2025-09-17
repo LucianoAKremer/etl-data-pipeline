@@ -1,43 +1,39 @@
-import pandas as pd
 import psycopg2
-from datetime import datetime
-
-CSV_FILE = "../data/data.csv"
-DB_CONFIG = {
-    'dbname': 'etl_db',
-    'user': 'etl_user',
-    'password': 'etl_password',
-    'host': 'localhost',
-    'port': 5432
-}
+import pandas as pd
 
 def load():
-    print(f"[{datetime.now()}] Cargando datos en PostgreSQL...")
-    df = pd.read_csv(CSV_FILE)
-
-    conn = psycopg2.connect(**DB_CONFIG)
+    # Conexión a PostgreSQL
+    conn = psycopg2.connect(
+        dbname="etl_db",
+        user="etl_user",
+        password="etl_password",
+        host="localhost",
+        port="5432"
+    )
     cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS public_apis (
-            API TEXT,
-            Description TEXT,
-            Auth TEXT,
-            HTTPS BOOLEAN,
-            Cors TEXT,
-            Category TEXT
-        );
-    """)
 
+    # Crear la tabla dentro del esquema etl_schema
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS etl_schema.posts (
+            userId INT,
+            id INT PRIMARY KEY,
+            title TEXT,
+            body TEXT
+        )
+    """)
+    conn.commit()
+
+    # Leer el CSV generado en la fase transform
+    df = pd.read_csv("transform/posts_clean.csv")
+
+    # Insertar datos en la tabla
     for _, row in df.iterrows():
         cursor.execute("""
-            INSERT INTO public_apis (API, Description, Auth, HTTPS, Cors, Category)
-            VALUES (%s,%s,%s,%s,%s,%s)
-        """, tuple(row))
+            INSERT INTO etl_schema.posts (userId, id, title, body)
+            VALUES (%s, %s, %s, %s)
+            ON CONFLICT (id) DO NOTHING;
+        """, (row["userId"], row["id"], row["title"], row["body"]))
 
     conn.commit()
     cursor.close()
     conn.close()
-    print(f"[{datetime.now()}] Carga completada.")
-
-if __name__ == "__main__":
-    load()
