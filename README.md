@@ -18,7 +18,7 @@ Los datos se extraen de una API pública, se transforman con **pandas** y se car
 - `extract/` → scripts de extracción de datos.
 - `transform/` → limpieza y normalización.
 - `load/` → carga a la base de datos.
-- `dags/` → flujos de Airflow.
+- `dags/` → futuros flujos de Airflow.
 
 ### Porque opte por esta estructura?
 - Modular: cada etapa ETL es independiente → fácil mantenimiento.
