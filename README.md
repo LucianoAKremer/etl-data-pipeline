@@ -20,7 +20,7 @@ Los datos se extraen de una API pública, se transforman con **pandas** y se car
 - `load/` → carga a la base de datos.
 - `dags/` → futuros flujos de Airflow.
 
-### Porque opte por esta estructura?
+### Por qué opte por esta estructura?
 - Modular: cada etapa ETL es independiente → fácil mantenimiento.
 - Preparada para migrar a Airflow: después podés convertir cada script en una tarea (PythonOperator).
 
